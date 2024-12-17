@@ -2,16 +2,16 @@
 /**
  * Iterate through php files in the includes folder and include them.
  */
-try {
-    $dir_iterator = new \RecursiveDirectoryIterator(__DIR__ . '/includes/');
-    $it           = new \RecursiveIteratorIterator($dir_iterator);
 
-    while ($it->valid()) {
-        if (!$it->isDot() && $it->isFile() && $it->isReadable() && $it->getExtension() === 'php') {
-            require $it->key();
+try {
+    $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . '/includes/');
+    $it = new RecursiveIteratorIterator($dir_iterator);
+
+    foreach ($it as $file) {
+        if ($file->isFile() && $file->isReadable() && $file->getExtension() === 'php') {
+            require $file->getPathname();
         }
-        $it->next();
     }
-} catch (\Exception $e) {
+} catch (Exception $e) {
     throw $e;
 }
