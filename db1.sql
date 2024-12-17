@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `studentsusjr-jsp1b03` DEFAULT CHARACTER SET utf8;
+CREATE DATABASE `usjr-jsp1b03` DEFAULT CHARACTER SET utf8;
 
 USE `usjr-jsp1b03`;
 
@@ -6,8 +6,6 @@ DROP TABLE IF EXISTS `usjr-jsp1b03`.`students`;
 DROP TABLE IF EXISTS `usjr-jsp1b03`.`programs`;
 DROP TABLE IF EXISTS `usjr-jsp1b03`.`departments`;
 DROP TABLE IF EXISTS `usjr-jsp1b03`.`colleges`;
-
-DESCRIBE students;
 
 CREATE TABLE users (
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -25,10 +23,10 @@ CREATE TABLE `usjr-jsp1b03`.`departments`(
   `deptid` INT NOT NULL,
   `deptfullname` VARCHAR(100) NOT NULL,
   `deptshortname` VARCHAR(20),
-  `deptcollid` INT NOT NULL, 
+  `deptcollid` INT NOT NULL,
   PRIMARY KEY (`deptid`),
   CONSTRAINT `fk_department_college_id`
-     FOREIGN KEY (`deptcollid`) 
+     FOREIGN KEY (`deptcollid`)
      REFERENCES `usjr-jsp1b03`.`colleges` (`collid`)
      ON DELETE NO ACTION
      ON UPDATE NO ACTION

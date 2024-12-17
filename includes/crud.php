@@ -1,12 +1,10 @@
 <?php
 // FILE: api/crud.php
-require_once '../config/db.php';
-
+require_once 'config/db.php';
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $pathSegments = explode('/', trim($path, '/'));
 $slug = isset($pathSegments[3]) ? $pathSegments[3] : "";
-
 
 $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : "";
 $id = isset($_GET['id']) ? $_GET['id'] : "";
@@ -28,7 +26,7 @@ if ($request_method === 'GET' && $slug && $id) {
                 if (is_array($value) && array_key_exists('studid', $value) && $value['studid'] == $id) {
                     $result = $value;
                     break;
-                } 
+                }
             }
             break;
         case 'programs':
@@ -36,7 +34,7 @@ if ($request_method === 'GET' && $slug && $id) {
                 if (is_array($value) && array_key_exists('progid', $value) && $value['progid'] == $id) {
                     $result = $value;
                     break;
-                } 
+                }
             }
             break;
         case 'colleges':
@@ -44,7 +42,7 @@ if ($request_method === 'GET' && $slug && $id) {
                 if (is_array($value) && array_key_exists('collid', $value) && $value['collid'] == $id) {
                     $result = $value;
                     break;
-                } 
+                }
             }
             break;
         case 'departments':
@@ -52,7 +50,7 @@ if ($request_method === 'GET' && $slug && $id) {
                 if (is_array($value) && array_key_exists('deptid', $value) && $value['deptid'] == $id) {
                     $result = $value;
                     break;
-                } 
+                }
             }
             break;
         default:
@@ -74,10 +72,10 @@ if ($request_method === 'GET' && $slug === 'programs' && $collid) {
 // create data
 if ($request_method === 'POST' && $slug) {
     $data = json_decode(file_get_contents('php://input'), true);
-    
+
     switch($slug) {
         case "students":
-            
+
             $stnt = $pdo->prepare("SELECT COUNT(*) FROM students WHERE studid = ?");
             $stnt->execute([$data['studid']]);
             $count = $stnt->fetchColumn();
@@ -85,19 +83,19 @@ if ($request_method === 'POST' && $slug) {
             if ($count > 0) {
                 echo json_encode(['status' => 'error', 'message' => 'Student ID already exists']);
                 exit;
-            }   
+            }
 
             $stmt = $pdo->prepare("INSERT INTO students (studid, studfirstname, studlastname, studmidname, studprogid, studcollid, studyear) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$data['studid'], $data['studfirstname'], $data['studlastname'], $data['studmidname'], $data['studprogid'], $data['studcollid'], $data['studyear']]);
             break;
 
-        case "programs": 
+        case "programs":
 
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM programs WHERE progid = ?");
             $stmt->execute([$data['progid']]);
             $count = $stmt->fetchColumn();
 
-            
+
             if ($count > 0) {
                 echo json_encode(['status' => 'error', 'message' => 'Duplicate progid']);
                 exit;
@@ -142,9 +140,9 @@ if ($request_method === 'POST' && $slug) {
         default:
         echo json_encode(['status' => 'error', 'message' => 'Invalid route']);
         exit;
-            
+
     }
-    
+
     echo json_encode($data);
 
 }
