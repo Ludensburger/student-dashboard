@@ -27,15 +27,17 @@ function enqueue_scripts() {
 }
 
 function get_header() {
-  require __DIR__ . '/../components/header.php';
+  require ROOT . '/components/header.php';
 }
 
 function get_footer() {
-  require __DIR__ . '/../components/footer.php';
+  require ROOT . '/components/footer.php';
 }
 
 // Register scripts and styles
 register_style('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
 register_script('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js');
-register_script('/student-dashboard/dist/bundle.js');
-register_script('/student-dashboard/axios/axios.min.js');
+register_script('/src/js/students.js');
+register_script('/src/js/scripts.js');
+register_script('/dist/bundle.js');
+register_script('/axios/axios.min.js');

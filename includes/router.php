@@ -1,33 +1,42 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+class Router
+{
+    private static $instance = null;
+    private $routes = [];
 
-$baseSlug = 'student-dashboard';
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$pathSegments = explode('/', trim($path, '/'));
-$slug = isset($pathSegments[1]) ? $pathSegments[1] : '';
+    // Private constructor to prevent direct object creation
+    private function __construct() {}
 
-// Check if the base slug matches
-if (isset($pathSegments[0]) && $pathSegments[0] === $baseSlug) {
-    // Define the base directory for templates
-    $templateDir = __DIR__ . '/../templates/';
+    // Private clone method to prevent cloning of the instance
+    private function __clone() {}
 
-    // Define the default route
-    $defaultRoute = 'home.php';
-
-    // Determine the template file to include
-    $templateFile = $templateDir . ($slug ? $slug . '.php' : $defaultRoute);
-
-    // Check if the template file exists
-    if (file_exists($templateFile)) {
-        require $templateFile;
-    } else {
-        // Default to a 404 page or redirect to a default page
-        http_response_code(404);
-        echo 'Page not found';
+    // Method to get the singleton instance
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
-} else {
-    // Default to a 404 page or redirect to a default page
-    http_response_code(404);
-    echo 'Page not found';
+
+    public function addRoute($route, $function, $method = 'GET')
+    {
+        $normalizedRoute = trim($route, '/');
+        $method = strtoupper($method);
+        $this->routes[$method][$normalizedRoute] = $function;
+    }
+
+    public function dispatch()
+    {
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
+        $url = trim($url, '/');
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+        if (isset($this->routes[$method][$url])) {
+            call_user_func($this->routes[$method][$url]);
+        } else {
+            http_response_code(404);
+            echo "Page not found";
+        }
+    }
 }
