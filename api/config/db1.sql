@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `usjr-jsp1b03` DEFAULT CHARACTER SET utf8;
+CREATE DATABASE `usjr-jsp1b03` DEFAULT CHARACTER SET utf8;
 
 USE `usjr-jsp1b03`;
 
@@ -6,6 +6,12 @@ DROP TABLE IF EXISTS `usjr-jsp1b03`.`students`;
 DROP TABLE IF EXISTS `usjr-jsp1b03`.`programs`;
 DROP TABLE IF EXISTS `usjr-jsp1b03`.`departments`;
 DROP TABLE IF EXISTS `usjr-jsp1b03`.`colleges`;
+
+CREATE TABLE users (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
 
 CREATE TABLE `usjr-jsp1b03`.`colleges` (
   `collid` INT NOT NULL,
@@ -17,10 +23,10 @@ CREATE TABLE `usjr-jsp1b03`.`departments`(
   `deptid` INT NOT NULL,
   `deptfullname` VARCHAR(100) NOT NULL,
   `deptshortname` VARCHAR(20),
-  `deptcollid` INT NOT NULL, 
+  `deptcollid` INT NOT NULL,
   PRIMARY KEY (`deptid`),
   CONSTRAINT `fk_department_college_id`
-     FOREIGN KEY (`deptcollid`) 
+     FOREIGN KEY (`deptcollid`)
      REFERENCES `usjr-jsp1b03`.`colleges` (`collid`)
      ON DELETE NO ACTION
      ON UPDATE NO ACTION
@@ -130,4 +136,5 @@ INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5002,'Bachelor of Science in Inform
 INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5003,'Bachelor of Science in Information Systems','BSIS',5,5001);
 INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5004,'Bachelor of Science in Entertainment and Multimedia Computing','BSEMC',5,5001);
 INSERT INTO `usjr-jsp1b03`.`programs` VALUES(6001,'Bachelof of Science in Nursing','BSN',6,6001);
+
 
