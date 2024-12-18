@@ -10,15 +10,15 @@ get_header();
         <div class="home__card card">
           <div class="card-body home__card-body">
             <h2 class="card-title home__card-title">Students</h2>
-            <a href="#" class="btn btn-primary">Click Here</a>
+            <a href="/students" class="btn btn-primary">Click Here</a>
           </div>
         </div>
       </div>
       <div class="col-sm-3">
         <div class="home__card card">
           <div class="card-body home__card-body">
-            <h2 class="card-title home__card-title">College</h2>
-            <a href="#" class="btn btn-primary">Click Here</a>
+            <h2 class="card-title home__card-title">Colleges</h2>
+            <a href="/colleges" class="btn btn-primary">Click Here</a>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@ get_header();
         <div class="home__card card">
           <div class="card-body home__card-body">
             <h2 class="card-title home__card-title">Departments</h2>
-            <a href="#" class="btn btn-primary">Click Here</a>
+            <a href="/departments" class="btn btn-primary">Click Here</a>
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@ get_header();
         <div class="home__card card">
           <div class="card-body home__card-body">
             <h2 class="card-title home__card-title">Programs</h2>
-            <a href="#" class="btn btn-primary">Click Here</a>
+            <a href="/programs" class="btn btn-primary">Click Here</a>
           </div>
         </div>
       </div>
