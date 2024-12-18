@@ -1,46 +1,43 @@
 # Student Dashboard
 
-## Setup
+This is a simple static website that uses SCSS for styling. Node.js is only required during development for SCSS compilation - the final website runs without any Node.js dependencies.   
 
-This project uses Composer to manage dependencies. Follow the steps below to set up the project and install the necessary tools for code quality checks.
+## Project Setup
 
-### Prerequisites
+Follow these steps to set up the project:
 
-- PHP (>= 7.4)
-- Composer
+### 1. Clone the Repository
 
-### Installation
-
-1. Clone the repository:
-
-    ```sh
-    git clone https://github.com/yourusername/student-dashboard.git
-    cd student-dashboard
-    ```
-
-2. Install the dependencies:
-
-    ```sh
-    composer install
-    ```
-
-### Code Quality Tools
-
-This project uses PHP_CodeSniffer (phpcs) and PHP Code Beautifier and Fixer (phpcbf) to ensure code quality and adherence to coding standards.
-
-#### PHP_CodeSniffer
-
-PHP_CodeSniffer is a tool that helps detect violations of coding standards in your PHP code.
-
-#### PHP Code Beautifier and Fixer
-
-PHP Code Beautifier and Fixer automatically fixes coding standard violations in your PHP code.
-
-### Usage
-
-#### Linting
-
-To check for coding standard violations, run:
+Clone the repository to your local machine:
 
 ```sh
-composer lint
+git clone https://github.com/your-username/student-dashboard.git
+cd student-dashboard
+```
+
+### 2. Install Dependencies
+
+Make sure you have Node.js and npm installed. Run the following command to install the necessary dependencies:
+
+
+```sh
+npm install
+```
+
+### 3. Set Up Apache Document Root
+
+This is a standard static website - simply point your Apache document root to the student-dashboard directory. No special configuration is required.
+
+## Build / Watch
+Compiling SCSS
+To compile SCSS files, run the following command:
+
+```sh
+npm run build
+```
+
+To watch for changes and automatically recompile SCSS files, run:
+
+```sh
+npm run watch
+```
