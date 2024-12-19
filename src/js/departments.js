@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Handle edit department
   function handleEditDepartment(event) {
     const deptid = event.target.getAttribute("data-id");
-    console.log(deptid);
     // Fetch department data and populate the form for editing
     axios
       .get(`api/departments.php?deptid=${deptid}`)
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("editDeptfullname").value =
           department.deptfullname;
         document.getElementById("editDeptshortname").value =
-          department.deptshortname;
+          department.deptshortname ?? "N/A";
         document.getElementById("editDeptcollid").value = department.deptcollid;
       })
       .catch((error) => alert("Error fetching department:", error.message));

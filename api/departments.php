@@ -1,74 +1,68 @@
 <?php
 require 'config/db.php';
 
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    header('Content-Type: application/json');
-    if (isset($_GET['collid'])) {
-        echo json_encode($pdo->query("SELECT * FROM colleges WHERE collid = {$_GET['collid']}")->fetch());
+    if (isset($_GET['deptid'])) {
+        $deptid = $_GET['deptid'];
+        $stmt = $pdo->prepare('SELECT * FROM departments WHERE deptid = ?');
+        $stmt->execute([$deptid]);
+        $department = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($department);
     } else {
-        echo json_encode($pdo->query("SELECT * FROM colleges")->fetchAll());
+        $stmt = $pdo->query('SELECT * FROM departments');
+        $departments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($departments);
     }
     exit;
 }
 
-// Handle adding a new college
+// Handle adding a new department
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
-    header('Content-Type: application/json');
-    $collid = $_POST['collid'] ?? '';
-    $collfullname = $_POST['collfullname'] ?? '';
-    $collshortname = $_POST['collshortname'] ?? '';
+    $deptid = $_POST['deptid'] ?? '';
+    $deptfullname = $_POST['deptfullname'] ?? '';
+    $deptshortname = $_POST['deptshortname'] ?? '';
+    $deptcollid = $_POST['deptcollid'] ?? '';
 
-    if (empty($collid) || empty($collfullname) || empty($collshortname)) {
+    if (empty($deptfullname) || empty($deptcollid)) {
         http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'All fields are required']);
+        echo json_encode(['status' => 'error', 'message' => 'Full Name and College ID are required']);
         exit;
     }
 
-    if ($collid == '0' || !is_numeric($collid)) {
+    if ($deptid == '0' || !is_numeric($deptid)) {
         http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'College ID cannot be 0']);
+        echo json_encode(['status' => 'error', 'message' => 'Department ID cannot be 0']);
         exit;
     }
 
-    // Check if the college ID already exists
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM colleges WHERE collid = ?');
-    $stmt->execute([$collid]);
-    if ($stmt->fetchColumn() > 0) {
-        http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'College ID already exists']);
-        exit;
-    }
-
-    // Insert the new college into the database
-    $stmt = $pdo->prepare("INSERT INTO colleges (collid, collfullname, collshortname) VALUES (?, ?, ?)");
-    $stmt->execute([$collid, $collfullname, $collshortname]);
+    // Insert the new department into the database
+    $stmt = $pdo->prepare("INSERT INTO departments (deptid, deptfullname, deptshortname, deptcollid) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$deptid, $deptfullname, $deptshortname, $deptcollid]);
 
     http_response_code(201); // Created
-    echo json_encode(['status' => 'success', 'message' => 'College added successfully']);
+    echo json_encode(['status' => 'success', 'message' => 'Department added successfully']);
     exit;
 }
 
-// Handle updating a college
+// Handle updating a department
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
-    header('Content-Type: application/json');
-    $collid = $_POST['collid'] ?? '';
-    $collfullname = $_POST['collfullname'] ?? '';
-    $collshortname = $_POST['collshortname'] ?? '';
-    $original_collid = $_POST['original_collid'] ?? '';
+    $deptid = $_POST['deptid'] ?? '';
+    $deptfullname = $_POST['deptfullname'] ?? '';
+    $deptshortname = $_POST['deptshortname'] ?? '';
+    $deptcollid = $_POST['deptcollid'] ?? '';
 
     $missingFields = [];
 
-    if (empty($collid)) {
-        $missingFields[] = 'collid';
+    if (empty($deptid)) {
+        $missingFields[] = 'deptid';
     }
-    if (empty($collfullname)) {
-        $missingFields[] = 'collfullname';
+    if (empty($deptfullname)) {
+        $missingFields[] = 'deptfullname';
     }
-    if (empty($collshortname)) {
-        $missingFields[] = 'collshortname';
-    }
-    if (empty($original_collid)) {
-        $missingFields[] = 'original_collid';
+    if (empty($deptcollid)) {
+        $missingFields[] = 'deptcollid';
     }
 
     if (!empty($missingFields)) {
@@ -77,43 +71,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
 
-    // Check if the new college ID already exists (if it was changed)
-    if ($collid !== $original_collid) {
-        $stmt = $pdo->prepare('SELECT COUNT(*) FROM colleges WHERE collid = ?');
-        $stmt->execute([$collid]);
-        if ($stmt->fetchColumn() > 0) {
-            http_response_code(400); // Bad Request
-            echo json_encode(['status' => 'error', 'message' => 'College ID already exists']);
-            exit;
-        }
-    }
-
-    // Update the college in the database
-    $stmt = $pdo->prepare("UPDATE colleges SET collid = ?, collfullname = ?, collshortname = ? WHERE collid = ?");
-    $stmt->execute([$collid, $collfullname, $collshortname, $original_collid]);
+    // Update the department in the database
+    $stmt = $pdo->prepare("UPDATE departments SET deptfullname = ?, deptshortname = ?, deptcollid = ? WHERE deptid = ?");
+    $stmt->execute([$deptfullname, $deptshortname, $deptcollid, $deptid]);
 
     http_response_code(200); // OK
-    echo json_encode(['status' => 'success', 'message' => 'College updated successfully']);
+    echo json_encode(['status' => 'success', 'message' => 'Department updated successfully']);
     exit;
 }
 
-// Handle removing a college
+// Handle removing a department
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'remove') {
-    header('Content-Type: application/json');
-    $collid = $_POST['collid'] ?? '';
+    $deptid = $_POST['deptid'] ?? '';
 
-    if (empty($collid)) {
+    if (empty($deptid)) {
         http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'College ID is required']);
+        echo json_encode(['status' => 'error', 'message' => 'Department ID is required']);
         exit;
     }
 
-    // Remove the college from the database
-    $stmt = $pdo->prepare("DELETE FROM colleges WHERE collid = ?");
-    $stmt->execute([$collid]);
+    try {
+        // Remove the department from the database
+        $stmt = $pdo->prepare("DELETE FROM departments WHERE deptid = ?");
+        $stmt->execute([$deptid]);
 
-    http_response_code(200); // OK
-    echo json_encode(['status' => 'success', 'message' => 'College removed successfully']);
+        http_response_code(200); // OK
+        echo json_encode(['status' => 'success', 'message' => 'Department removed successfully']);
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) { // Integrity constraint violation
+            http_response_code(400); // Bad Request
+            echo json_encode(['status' => 'error', 'message' => 'Cannot delete department because it is referenced by other records']);
+        } else {
+            http_response_code(500); // Internal Server Error
+            echo json_encode(['status' => 'error', 'message' => 'An error occurred while deleting the department']);
+        }
+    }
     exit;
 }
 

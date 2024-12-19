@@ -78,6 +78,10 @@ $colleges = $databaseDump["colleges"];
             <div class="modal-body">
                 <form id="add-department-form">
                     <div class="mb-3">
+                        <label for="addDeptid" class="form-label">Department ID</label>
+                        <input type="text" class="form-control" id="addDeptid" name="deptid" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="addDeptfullname" class="form-label">Department Name</label>
                         <input type="text" class="form-control" id="addDeptfullname" name="deptfullname" required>
                     </div>
@@ -87,7 +91,8 @@ $colleges = $databaseDump["colleges"];
                     </div>
                     <div class="mb-3">
                         <label for="addDeptcollid" class="form-label">College</label>
-                        <select class="form-control" id="addDeptcollid" name="deptcollid" required>
+                        <select class="form-control" id="addDeptcollid" name="deptcollid" required default="">
+                            <option value="">Select College</option>
                             <?php foreach ($colleges as $college) { ?>
                                 <option value="<?php echo htmlspecialchars(
                                     $college["collid"]
@@ -115,7 +120,10 @@ $colleges = $databaseDump["colleges"];
             </div>
             <div class="modal-body">
                 <form id="edit-department-form">
-                    <input type="hidden" id="editDeptid" name="deptid">
+                    <div class="mb-3">
+                        <label for="editDeptid" class="form-label">Department ID</label>
+                        <input type="text" class="form-control" id="editDeptid" name="deptid" required>
+                    </div>
                     <div class="mb-3">
                         <label for="editDeptfullname" class="form-label">Department Name</label>
                         <input type="text" class="form-control" id="editDeptfullname" name="deptfullname" required>
@@ -126,7 +134,8 @@ $colleges = $databaseDump["colleges"];
                     </div>
                     <div class="mb-3">
                         <label for="editDeptcollid" class="form-label">College</label>
-                        <select class="form-control" id="editDeptcollid" name="deptcollid" required>
+                        <select class="form-control" id="editDeptcollid" name="deptcollid" required default="">
+                            <option value="">Select College</option>
                             <?php foreach ($colleges as $college) { ?>
                                 <option value="<?php echo htmlspecialchars(
                                     $college["collid"]
