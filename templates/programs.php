@@ -1,4 +1,6 @@
 <?php
+register_script('/src/js/programs.js');
+
 get_header();
 require 'api/config/db.php';
 
@@ -10,8 +12,11 @@ $departments = $databaseDump['departments'];
 
 <div class="programs p-5">
     <div class="row programs__row">
-        <div class="col">
+    <div class="col d-flex align-items-center">
             <h1>Programs</h1>
+            <a class="btn btn-success m-3" href="/">Back to Dashboard</a>
+
+
         </div>
         <?php if (isset($_SESSION['user']['username'])) { ?>
             <div class="col programs__controls">
@@ -63,7 +68,11 @@ $departments = $databaseDump['departments'];
       </div>
       <div class="modal-body">
         <form id="add-program-form">
-          <div class="mb-3">
+        <div class="mb-3">
+            <label for="addprogid" class="form-label">Program ID</label>
+            <input type="text" class="form-control" id="addprogid" name="progid" required>
+          </div>  
+        <div class="mb-3">
             <label for="addProgfullname" class="form-label">Full Name</label>
             <input type="text" class="form-control" id="addProgfullname" name="progfullname" required>
           </div>
@@ -71,14 +80,7 @@ $departments = $databaseDump['departments'];
             <label for="addProgshortname" class="form-label">Short Name</label>
             <input type="text" class="form-control" id="addProgshortname" name="progshortname" required>
           </div>
-          <div class="mb-3">
-            <label for="addProgcollid" class="form-label">College ID</label>
-            <select class="form-control" id="addProgcollid" name="progcollid" required>
-              <?php foreach ($colleges as $college) { ?>
-                <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
-              <?php } ?>
-            </select>
-          </div>
+
           <div class="mb-3">
             <label for="addProgcolldeptid" class="form-label">Department ID</label>
             <select class="form-control" id="addProgcolldeptid" name="progcolldeptid" required>
@@ -87,6 +89,16 @@ $departments = $databaseDump['departments'];
               <?php } ?>
             </select>
           </div>
+
+          <div class="mb-3">
+            <label for="addProgcollid" class="form-label">College ID</label>
+            <select class="form-control" id="addProgcollid" name="progcollid" required>
+              <?php foreach ($colleges as $college) { ?>
+                <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
+              <?php } ?>
+            </select>
+          </div>
+          
           <button type="submit" class="btn btn-primary">Add Program</button>
         </form>
       </div>
@@ -113,14 +125,8 @@ $departments = $databaseDump['departments'];
             <label for="editProgshortname" class="form-label">Short Name</label>
             <input type="text" class="form-control" id="editProgshortname" name="progshortname" required>
           </div>
-          <div class="mb-3">
-            <label for="editProgcollid" class="form-label">College ID</label>
-            <select class="form-control" id="editProgcollid" name="progcollid" required>
-              <?php foreach ($colleges as $college) { ?>
-                <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
-              <?php } ?>
-            </select>
-          </div>
+
+
           <div class="mb-3">
             <label for="editProgcolldeptid" class="form-label">Department ID</label>
             <select class="form-control" id="editProgcolldeptid" name="progcolldeptid" required>
@@ -129,6 +135,20 @@ $departments = $databaseDump['departments'];
               <?php } ?>
             </select>
           </div>
+
+
+          <div class="mb-3">
+            <label for="editProgcollid" class="form-label">College ID</label>
+            <select class="form-control" id="editProgcollid" name="progcollid" required>
+              <?php foreach ($colleges as $college) { ?>
+                <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
+              <?php } ?>
+            </select>
+          </div>
+
+   
+          
+          
           <button type="submit" class="btn btn-primary">Update Program</button>
         </form>
       </div>
