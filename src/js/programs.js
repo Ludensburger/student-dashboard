@@ -9,7 +9,49 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".delete-program").forEach((button) => {
       button.addEventListener("click", handleDeleteProgram);
     });
+
+    // Add event listener for college change for adding student
+    document
+      .getElementById("addProgcollid")
+      .addEventListener("change", handleCollegeChange);
+
+    // Add event listener for college change for editing student
+    document
+      .getElementById("editProgcollid")
+      .addEventListener("change", handleCollegeChange);
   }
+
+    // Handle college change
+    function handleCollegeChange(event) {
+      const selectedCollegeId = event.target.value;
+      const target = event.target;
+      console.log(target);
+
+      if (target.id === "addProgcollid") {
+        deptSelectID = "#addProgcolldeptid";
+      } else {
+        deptSelectID = "#editProgcolldeptid";
+      }
+
+      const deptSelect = document.querySelector(deptSelectID);
+      deptSelect.innerHTML = "<option value=''>Select Program</option>";
+
+      if (selectedCollegeId && deptSelect) {
+        axios
+          .get(`api/programs?collid=${selectedCollegeId}`)
+          .then((res) => {
+            const departments = res.data;
+            console.log(departments);
+            departments.forEach((department) => {
+              const option = document.createElement("option");
+              option.value = department.deptid;
+              option.textContent = department.deptfullname;
+              deptSelect.appendChild(option);
+            });
+          })
+          .catch((error) => console.error("Error fetching programs:", error));
+      }
+    }
 
   // Handle edit program
   function handleEditProgram(event) {
@@ -27,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("editProgshortname").value =
           program.progshortname;
         document.getElementById("editProgcollid").value = program.progcollid;
+        document.getElementById("editProgcolldeptid").innerHTML = `<option value="${program.progcolldeptid}">${program.deptfullname}</option>`;
         document.getElementById("editProgcolldeptid").value =
           program.progcolldeptid;
       })
