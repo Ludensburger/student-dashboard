@@ -60,12 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
       formData.append("action", "update");
       formData.append("collid", document.getElementById("editCollid").value);
 
-      console.log(formData);
-
-      foreach(formData, (value, key) => {
-        console.log(key, value);
-      });
-
       axios
         .post("api/colleges.php", formData)
         .then((response) => {

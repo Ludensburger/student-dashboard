@@ -67,15 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
 
-    // Check if the college ID already exists (if it was changed)
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM colleges WHERE collid = ?');
-    $stmt->execute([$collid]);
-    if ($stmt->fetchColumn() > 0) {
-        http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'College ID already exists']);
-        exit;
-    }
-
     // Update the college in the database
     $stmt = $pdo->prepare("UPDATE colleges SET collid = ?, collfullname = ?, collshortname = ? WHERE collid = ?");
     $stmt->execute([$collid, $collfullname, $collshortname, $collid]);
@@ -96,12 +87,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
 
-    // Remove the college from the database
-    $stmt = $pdo->prepare("DELETE FROM colleges WHERE collid = ?");
-    $stmt->execute([$collid]);
+    try {
+        // Remove the college from the database
+        $stmt = $pdo->prepare("DELETE FROM colleges WHERE collid = ?");
+        $stmt->execute([$collid]);
 
-    http_response_code(200); // OK
-    echo json_encode(['status' => 'success', 'message' => 'College removed successfully']);
+        http_response_code(200); // OK
+        echo json_encode(['status' => 'success', 'message' => 'College removed successfully']);
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) { // Integrity constraint violation
+            http_response_code(400); // Bad Request
+            echo json_encode(['status' => 'error', 'message' => 'Cannot delete college because it is referenced by other records']);
+        } else {
+            http_response_code(500); // Internal Server Error
+            echo json_encode(['status' => 'error', 'message' => 'An error occurred while deleting the college']);
+        }
+    }
     exit;
 }
 
