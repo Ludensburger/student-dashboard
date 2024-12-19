@@ -1,4 +1,6 @@
 <?php
+// ini_set("session.save_path", "C:/Users/hp/Desktop/ryu-files/Codes/PHP/phpsite/final-project/student-dashboard/src/sessions");
+
 session_start();
 require 'config/db.php';
 
