@@ -30,7 +30,7 @@ class Router
     {
         $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
         $url = trim($url, '/');
-        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET'; 
 
         if (isset($this->routes[$method][$url])) {
             call_user_func($this->routes[$method][$url]);
