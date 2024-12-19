@@ -4,9 +4,18 @@ require 'config/db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Content-Type: application/json');
     if (isset($_GET['studid'])) {
-        echo json_encode($pdo->query("SELECT * FROM students WHERE studid = {$_GET['studid']}")->fetch());
+        $studid = $_GET['studid'];
+        $stmt = $pdo->prepare("
+            SELECT students.*, programs.progfullname 
+            FROM students 
+            JOIN programs ON students.studprogid = programs.progid 
+            WHERE students.studid = ?
+        ");
+        $stmt->execute([$studid]);
+        $student = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($student);
     } else {
-        echo json_decode($databaseDump['students']);
+        echo json_encode(['status' => 'error', 'message' => 'Student ID is required']);
     }
     exit;
 }
