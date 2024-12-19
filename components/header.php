@@ -13,7 +13,8 @@ session_start();
 
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand"><strong>Student Masterlist</strong></a>
+    <a class="navbar-brand" href="/"><strong>Student Masterlist</strong> </a>
+    
     <p class="navbar__title"><?= !empty($_SESSION) ? 'Logged in as: ' . $_SESSION['user']['username'] : '' ?></p>
     <div class="row">
       <?php
