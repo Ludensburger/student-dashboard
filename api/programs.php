@@ -10,6 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt->execute([$progid]);
         $program = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($program);
+    } else if (isset($_GET['collid'])) {
+        $collid = $_GET['collid'];
+        $stmt = $pdo->prepare('SELECT * FROM programs WHERE progcollid = ?');
+        $stmt->execute([$collid]);
+        $programs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($programs);
     } else {
         $stmt = $pdo->query('SELECT * FROM programs');
         $programs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -18,22 +24,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
+
+
+            
+
 // Handle adding a new program
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
+    $progid = $_POST['progid'] ?? '';
     $progfullname = $_POST['progfullname'] ?? '';
     $progshortname = $_POST['progshortname'] ?? '';
     $progcollid = $_POST['progcollid'] ?? '';
     $progcolldeptid = $_POST['progcolldeptid'] ?? '';
 
-    if (empty($progfullname) || empty($progcollid) || empty($progcolldeptid)) {
+    if (empty($progid) || empty($progfullname) || empty($progcollid) || empty($progcolldeptid)) {
         http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'Full Name, College ID, and Department ID are required']);
+        echo json_encode(['status' => 'error', 'message' => 'All Fields are Required.']);
         exit;
     }
 
     // Insert the new program into the database
-    $stmt = $pdo->prepare("INSERT INTO programs (progfullname, progshortname, progcollid, progcolldeptid) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$progfullname, $progshortname, $progcollid, $progcolldeptid]);
+    $stmt = $pdo->prepare("INSERT INTO programs (progid, progfullname, progshortname, progcollid, progcolldeptid) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$progid, $progfullname, $progshortname, $progcollid, $progcolldeptid]);
 
     http_response_code(201); // Created
     echo json_encode(['status' => 'success', 'message' => 'Program added successfully']);
