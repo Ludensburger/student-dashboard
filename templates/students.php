@@ -1,60 +1,73 @@
 <?php
+
+register_script('/src/js/students.js');
+
 get_header();
-require 'api/config/db.php';
+
+
+
+require "api/config/db.php";
 
 // Fetch programs and colleges data
-$programs = $databaseDump['programs'];
-$colleges = $databaseDump['colleges'];
-
+$programs = $databaseDump["programs"];
+$colleges = $databaseDump["colleges"];
 ?>
 
-<div class="students p-5">
-    <div class="row students__row">
-        <div class="col">
-            <h1>Students</h1>
-        </div>
-        <?php if (isset($_SESSION['user']['username'])) { ?>
-            <div class="col students__controls">
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student</button>
-            </div>
-        <?php } ?>
-    </div>
 
-    <table id="students__table" class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Middle Name</th>
-                <th>Program ID</th>
-                <th>College ID</th>
-                <th>Year</th>
-                <?php if (isset($_SESSION['user']['username'])) { ?>
-                    <th>Actions</th>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($databaseDump['students'] as $student) { ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($student['studid']); ?></td>
-                    <td><?php echo htmlspecialchars($student['studfirstname']); ?></td>
-                    <td><?php echo htmlspecialchars($student['studlastname']); ?></td>
-                    <td><?php echo htmlspecialchars($student['studmidname']); ?></td>
-                    <td><?php echo htmlspecialchars($student['studprogid']); ?></td>
-                    <td><?php echo htmlspecialchars($student['studcollid']); ?></td>
-                    <td><?php echo htmlspecialchars($student['studyear']); ?></td>
-                    <?php if (isset($_SESSION['user']['username'])) { ?>
-                        <td>
-                            <button class="btn btn-primary edit-student" data-id="<?php echo $student['studid']; ?>" data-bs-toggle="modal" data-bs-target="#editStudentModal">Edit</button>
-                            <button class="btn btn-danger delete-student" data-id="<?php echo $student['studid']; ?>">Delete</button>
-                        </td>
-                    <?php } ?>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+
+<div class="students p-5">
+  <div class="row students__row">
+    <div class="col d-flex align-items-center">
+      <h1 class="mb-0">Students</h1>
+      <a class="btn btn-success m-3" href="/">Back to Dashboard</a>
+    </div>
+    <?php if (isset($_SESSION["user"]["username"])) { ?>
+      <div class="col students__controls">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student</button>
+      </div>
+    <?php } ?>
+  </div>
+
+  <table id="students__table" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Middle Name</th>
+        <th>Program ID</th>
+        <th>College ID</th>
+        <th>Year</th>
+        <?php if (isset($_SESSION["user"]["username"])) { ?>
+          <th>Actions</th>
+        <?php } ?>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($databaseDump["students"] as $student) { ?>
+        <tr>
+          <td><?php echo htmlspecialchars($student["studid"]); ?></td>
+          <td><?php echo htmlspecialchars($student["studfirstname"]); ?></td>
+          <td><?php echo htmlspecialchars($student["studlastname"]); ?></td>
+          <td><?php echo htmlspecialchars($student["studmidname"]); ?></td>
+          <td><?php echo htmlspecialchars($student["studprogid"]); ?></td>
+          <td><?php echo htmlspecialchars($student["studcollid"]); ?></td>
+          <td><?php echo htmlspecialchars($student["studyear"]); ?></td>
+          <?php if (isset($_SESSION["user"]["username"])) { ?>
+            <td>
+              <button class="btn btn-primary edit-student" data-id="<?php echo $student[
+                  "studid"
+              ]; ?>"
+                data-bs-toggle="modal" data-bs-target="#editStudentModal">Edit</button>
+              <button class="btn btn-danger delete-student" data-id="<?php echo $student[
+                  "studid"
+              ]; ?>">Delete</button>
+            </td>
+          <?php } ?>
+        </tr>
+      <?php } ?>
+    </tbody>
+  </table>
 </div>
 
 <!-- Add Student Modal -->
@@ -67,7 +80,7 @@ $colleges = $databaseDump['colleges'];
       </div>
       <div class="modal-body">
         <form id="add-student-form">
-           <div class="mb-3">
+          <div class="mb-3">
             <label for="addStudid" class="form-label">Student ID</label>
             <input type="text" class="form-control" id="addStudid" name="studid" required>
           </div>
@@ -83,22 +96,26 @@ $colleges = $databaseDump['colleges'];
             <label for="addStudmidname" class="form-label">Middle Name</label>
             <input type="text" class="form-control" id="addStudmidname" name="studmidname">
           </div>
+
           <div class="mb-3">
-            <label for="addStudprogid" class="form-label">Program ID</label>
-            <select class="form-control" id="addStudprogid" name="studprogid" required>
-              <?php foreach ($programs as $program) { ?>
-                <option value="<?php echo htmlspecialchars($program['progid']); ?>"><?php echo htmlspecialchars($program['progfullname']); ?></option>
-              <?php } ?>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="addStudcollid" class="form-label">College ID</label>
-            <select class="form-control" id="addStudcollid" name="studcollid" required>
+            <label for="addStudcollid" class="form-label">College</label>
+            <select class="form-control" id="addStudcollid" name="studcollid" required default="">
+                <option value="">Select College</option>
               <?php foreach ($colleges as $college) { ?>
                 <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
               <?php } ?>
             </select>
           </div>
+
+          <div class="mb-3">
+            <label for="addStudprogid" class="form-label">Program</label>
+            <select class="form-control" id="addStudprogid" name="studprogid" required default="">
+                <option value="">Select Program</option>
+            </select>
+          </div>
+
+        
+
           <div class="mb-3">
             <label for="addStudyear" class="form-label">Year</label>
             <input type="number" class="form-control" id="addStudyear" name="studyear" required>
@@ -134,19 +151,18 @@ $colleges = $databaseDump['colleges'];
             <input type="text" class="form-control" id="editStudmidname" name="studmidname">
           </div>
           <div class="mb-3">
-            <label for="editStudprogid" class="form-label">Program ID</label>
-            <select class="form-control" id="editStudprogid" name="studprogid" required>
-              <?php foreach ($programs as $program) { ?>
-                <option value="<?php echo htmlspecialchars($program['progid']); ?>"><?php echo htmlspecialchars($program['progfullname']); ?></option>
+            <label for="editStudcollid" class="form-label">College</label>
+            <select class="form-control" id="editStudcollid" name="studcollid" required default="">
+              <option value="">Select College</option>
+              <?php foreach ($colleges as $college) { ?>
+                <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
               <?php } ?>
             </select>
           </div>
           <div class="mb-3">
-            <label for="editStudcollid" class="form-label">College ID</label>
-            <select class="form-control" id="editStudcollid" name="studcollid" required>
-              <?php foreach ($colleges as $college) { ?>
-                <option value="<?php echo htmlspecialchars($college['collid']); ?>"><?php echo htmlspecialchars($college['collfullname']); ?></option>
-              <?php } ?>
+            <label for="editStudprogid" class="form-label">Program</label>
+            <select class="form-control" id="editStudprogid" name="studprogid" required default="">
+              <option value="">Select Program</option>
             </select>
           </div>
           <div class="mb-3">
@@ -160,5 +176,4 @@ $colleges = $databaseDump['colleges'];
   </div>
 </div>
 
-<?php
-get_footer();
+<?php get_footer();
