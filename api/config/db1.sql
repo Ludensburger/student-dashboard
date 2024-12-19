@@ -14,13 +14,13 @@ CREATE TABLE users (
 );
 
 CREATE TABLE `usjr-jsp1b03`.`colleges` (
-  `collid` INT NOT NULL,
+  `collid` INT NOT NULL UNIQUE,
   `collfullname` VARCHAR(100) NOT NULL,
   `collshortname` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`collid`));
 
 CREATE TABLE `usjr-jsp1b03`.`departments`(
-  `deptid` INT NOT NULL,
+  `deptid` INT NOT NULL UNIQUE,
   `deptfullname` VARCHAR(100) NOT NULL,
   `deptshortname` VARCHAR(20),
   `deptcollid` INT NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `usjr-jsp1b03`.`departments`(
   );
 
 CREATE TABLE `usjr-jsp1b03`.`programs` (
-  `progid` INT NOT NULL,
+  `progid` INT NOT NULL UNIQUE,
   `progfullname` VARCHAR(100) NOT NULL,
   `progshortname` VARCHAR(20),
   `progcollid` INT NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `usjr-jsp1b03`.`programs` (
 );
 
 CREATE TABLE `usjr-jsp1b03`.`students` (
-  `studid` INT NOT NULL,
+  `studid` INT NOT NULL UNIQUE,
   `studfirstname` VARCHAR(50) NOT NULL,
   `studlastname` VARCHAR(50) NOT NULL,
   `studmidname` VARCHAR(50) NULL,
@@ -135,6 +135,6 @@ INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5001,'Bachelor of Science in Comput
 INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5002,'Bachelor of Science in Information Technology','BSIT',5,5001);
 INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5003,'Bachelor of Science in Information Systems','BSIS',5,5001);
 INSERT INTO `usjr-jsp1b03`.`programs` VALUES(5004,'Bachelor of Science in Entertainment and Multimedia Computing','BSEMC',5,5001);
-INSERT INTO `usjr-jsp1b03`.`programs` VALUES(6001,'Bachelof of Science in Nursing','BSN',6,6001);
+INSERT INTO `usjr-jsp1b03`.`programs` VALUES(6001,'Bachelor of Science in Nursing','BSN',6,6001);
 
 
