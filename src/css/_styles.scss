@@ -50,3 +50,24 @@
     }
 }
 
+.departments {
+    &__row {
+        align-items: center;
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+.college {
+    &__row {
+        align-items: center;
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
