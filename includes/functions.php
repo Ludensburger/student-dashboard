@@ -37,7 +37,7 @@ function get_footer() {
 // Register scripts and styles
 register_style('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
 register_script('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js');
-register_script('/src/js/students.js');
+
 register_script('/src/js/scripts.js');
 register_script('/dist/bundle.js');
 register_script('/axios/axios.min.js');
