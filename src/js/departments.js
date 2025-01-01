@@ -14,13 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Handle edit department
   function handleEditDepartment(event) {
     const deptid = event.target.getAttribute("data-id");
-    console.log(deptid);
+    console.log("Edit button clicked for department ID:", deptid);
     // Fetch department data and populate the form for editing
     axios
       .get(`api/departments.php?deptid=${deptid}`)
       .then((response) => {
         const department = response.data;
-        console.log(department);
+        console.log("Fetched department data:", department);
         // Populate the form with department data
         document.getElementById("editDeptid").value = department.deptid;
         document.getElementById("editDeptfullname").value =
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       const formData = new FormData(event.target);
       formData.append("action", "update");
-      formData.append("deptid", document.getElementById("editDeptid").value);
 
       axios
         .post("api/departments.php", formData)
@@ -75,11 +74,16 @@ document.addEventListener("DOMContentLoaded", function () {
               document.getElementById("editDepartmentModal")
             );
             editDepartmentModal.hide();
+          } else if (data.message === "Duplicate department") {
+            alert("Error: Duplicate department");
           } else {
-            alert("Error updating department");
+            alert("Error updating department: " + data.message);
           }
         })
-        .catch((error) => alert("Error updating department:", error.message));
+        .catch((error) => {
+          console.error("Error updating department:", error);
+          alert("Error updating department:", error.message);
+        });
     });
 
   // Handle add department form submission
@@ -102,11 +106,16 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             location.reload();
             addDepartmentModal.hide();
+          } else if (data.message === "Duplicate department") {
+            alert("Error: Duplicate department");
           } else {
-            alert("Error adding department");
+            alert("Error adding department: " + data.message);
           }
         })
-        .catch((error) => console.error("Error adding department:", error));
+        .catch((error) => {
+          console.error("Error adding department:", error);
+          alert("Error adding department:", error.message);
+        });
     });
 
   // Fetch departments on page load
