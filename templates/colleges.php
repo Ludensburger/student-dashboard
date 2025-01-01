@@ -14,7 +14,7 @@ $colleges = $databaseDump["colleges"];
       <a class="btn btn-success m-3" href="/">Back to Dashboard</a>
     </div>
     <?php if (isset($_SESSION["user"]["username"])) { ?>
-      <div class="col colleges__controls">
+      <div class="col text-end">
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCollegeModal">Add College</button>
       </div>
     <?php } ?>
