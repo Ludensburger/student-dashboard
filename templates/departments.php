@@ -78,12 +78,16 @@ $colleges = $databaseDump["colleges"];
             <div class="modal-body">
                 <form id="add-department-form">
                     <div class="mb-3">
+                        <label for="addDeptid" class="form-label">Department ID</label>
+                        <input type="number" class="form-control" id="addDeptid" name="deptid" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="addDeptfullname" class="form-label">Department Name</label>
                         <input type="text" class="form-control" id="addDeptfullname" name="deptfullname" required>
                     </div>
                     <div class="mb-3">
                         <label for="addDeptshortname" class="form-label">Short Name</label>
-                        <input type="text" class="form-control" id="addDeptshortname" name="deptshortname" required>
+                        <input type="text" class="form-control" id="addDeptshortname" name="deptshortname">
                     </div>
                     <div class="mb-3">
                         <label for="addDeptcollid" class="form-label">College</label>
@@ -122,7 +126,7 @@ $colleges = $databaseDump["colleges"];
                     </div>
                     <div class="mb-3">
                         <label for="editDeptshortname" class="form-label">Short Name</label>
-                        <input type="text" class="form-control" id="editDeptshortname" name="deptshortname" required>
+                        <input type="text" class="form-control" id="editDeptshortname" name="deptshortname">
                     </div>
                     <div class="mb-3">
                         <label for="editDeptcollid" class="form-label">College</label>
@@ -143,6 +147,8 @@ $colleges = $databaseDump["colleges"];
         </div>
     </div>
 </div>
+
+
 
 <?php get_footer();
 ?>
