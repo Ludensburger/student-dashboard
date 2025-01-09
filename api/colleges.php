@@ -67,13 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
 
-    // Check if the college ID already exists (if it was changed)
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM colleges WHERE collid = ?');
-    $stmt->execute([$collid]);
-    if ($stmt->fetchColumn() > 0) {
-        http_response_code(400); // Bad Request
-        echo json_encode(['status' => 'error', 'message' => 'College ID already exists']);
-        exit;
+    // Check if the college ID already exists (only for adding new college)
+    if ($_POST['action'] === 'add') {
+        $stmt = $pdo->prepare('SELECT COUNT(*) FROM colleges WHERE collid = ?');
+        $stmt->execute([$collid]);
+        if ($stmt->fetchColumn() > 0) {
+            http_response_code(400); // Bad Request
+            echo json_encode(['status' => 'error', 'message' => 'College ID already exists']);
+            exit;
+        }
     }
 
     // Update the college in the database
