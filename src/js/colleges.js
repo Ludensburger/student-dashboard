@@ -62,12 +62,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       console.log(formData);
 
-      foreach(formData, (value, key) => {
+      formData.forEach((value, key) => {
         console.log(key, value);
       });
 
-      axios
-        .post("api/colleges.php", formData)
+      axios({
+        method: "post",
+        url: "api/colleges.php",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
         .then((response) => {
           const data = response.data;
           if (data.status === "success") {
